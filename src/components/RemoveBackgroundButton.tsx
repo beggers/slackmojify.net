@@ -1,7 +1,7 @@
 import { removeBackground } from '@imgly/background-removal';
 
 interface RemoveBackgroundButtonProps {
-    image: File | null;
+    image: Blob | null;
     setProcessedImage: (image: Blob) => void;
 }
 
@@ -12,14 +12,10 @@ function RemoveBackgroundButton({ image, setProcessedImage }: RemoveBackgroundBu
             console.error('No image found');
             return;
         }
-        console.log('Received valid original image:', image);
-
-        const image_buf = await image.arrayBuffer();
-        const image_blob = new Blob([image_buf], { type: 'image/jpg' });
 
         try {
             console.log('Removing background...');
-            const result = await removeBackground(image_blob);
+            const result = await removeBackground(image);
             if (result) {
                 console.log('Background removal successful');
                 setProcessedImage(result);

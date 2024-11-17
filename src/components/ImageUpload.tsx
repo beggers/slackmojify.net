@@ -1,14 +1,13 @@
 interface ImageUploadProps {
-    setImage: (file: File) => void;
     setProcessedImage: (image: Blob) => void;
 }
 
-function ImageUpload({ setImage, setProcessedImage }: ImageUploadProps) {
+function ImageUpload({ setProcessedImage }: ImageUploadProps) {
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setImage(file);
-            setProcessedImage(file);
+            const blob = new Blob([file], { type: file.type });
+            setProcessedImage(blob);
         }
     };
 
