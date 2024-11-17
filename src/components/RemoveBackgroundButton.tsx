@@ -32,7 +32,7 @@ function RemoveBackgroundButton({ image, setProcessedImage }: RemoveBackgroundBu
     };
 
     return (
-        <div className="effects-control">
+        <div className="remove-background-button">
             <button onClick={removeBackgroundHandler}>Remove Background</button>
         </div>
     );
