@@ -1,11 +1,11 @@
 import { removeBackground } from '@imgly/background-removal';
 
-interface EffectsControlProps {
+interface RemoveBackgroundButtonProps {
     image: File | null;
     setProcessedImage: (image: Blob) => void;
 }
 
-function EffectsControl({ image, setProcessedImage }: EffectsControlProps) {
+function RemoveBackgroundButton({ image, setProcessedImage }: RemoveBackgroundButtonProps) {
     const removeBackgroundHandler = async () => {
         console.log('Button clicked');
         if (!image) {
@@ -38,4 +38,4 @@ function EffectsControl({ image, setProcessedImage }: EffectsControlProps) {
     );
 }
 
-export default EffectsControl;
+export default RemoveBackgroundButton;
