@@ -10,38 +10,20 @@ function EffectsControl({ image, setProcessedImage }) {
         }
         console.log('Received valid original image:', image);
 
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const img = new Image();
-            img.src = reader.result;
+        const url = URL.createObjectURL(image);
 
-            console.log('Loading image...');
-            img.onload = async () => {
-                try {
-                    console.log('Removing background...');
-                    const result = await removeBackground({ input: image });
-                    if (result && result.canvas) {
-                        console.log('Background removal successful');
-                        setProcessedImage(result.canvas.toDataURL());
-                    } else {
-                        console.error('Background removal failed: Result is undefined or does not contain a canvas');
-                    }
-                } catch (error) {
-                    console.error('Error removing background:', error);
-                }
-            };
-
-            img.onerror = (error) => {
-                console.error('Error loading image:', error);
-            };
+        try {
+            console.log('Removing background...');
+            const result = await removeBackground({ input: url });
+            if (result && result.canvas) {
+                console.log('Background removal successful');
+                setProcessedImage(result.canvas.toDataURL());
+            } else {
+                console.error('Background removal failed: Result is undefined or does not contain a canvas');
+            }
+        } catch (error) {
+            console.error('Error during background removal:', error);
         };
-
-        reader.onerror = (error) => {
-            console.error('Error reading file:', error);
-        };
-
-        console.log('Reading file...');
-        reader.readAsDataURL(image);
     };
 
     return (
