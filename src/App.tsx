@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import EffectsControl from './components/EffectsControl';
 import ImageUpload from './components/ImageUpload';
@@ -7,7 +7,7 @@ import DownloadButton from './components/DownloadButton';
 
 function App() {
     const [image, setImage] = useState<File | null>(null);
-    const [processedImage, setProcessedImage] = useState<string | null>(null);
+    const [processedImage, setProcessedImage] = useState<Blob | null>(null);
 
     return (
         <div className="App">

@@ -1,9 +1,8 @@
-import React from 'react';
 import { removeBackground } from '@imgly/background-removal';
 
 interface EffectsControlProps {
     image: File | null;
-    setProcessedImage: (image: string) => void;
+    setProcessedImage: (image: Blob) => void;
 }
 
 function EffectsControl({ image, setProcessedImage }: EffectsControlProps) {
@@ -15,26 +14,19 @@ function EffectsControl({ image, setProcessedImage }: EffectsControlProps) {
         }
         console.log('Received valid original image:', image);
 
-        const img = new Image();
-        img.src = URL.createObjectURL(image);
+        const image_buf = await image.arrayBuffer();
 
-        img.onload = async () => {
-            try {
-                console.log('Removing background...');
-                const result = await removeBackground({ input: img });
-                if (result && result.canvas) {
-                    console.log('Background removal successful');
-                    setProcessedImage(result.canvas.toDataURL());
-                } else {
-                    console.error('Background removal failed: Result is undefined or does not contain a canvas');
-                }
-            } catch (error) {
-                console.error('Error during background removal:', error);
+        try {
+            console.log('Removing background...');
+            const result = await removeBackground(image_buf);
+            if (result) {
+                console.log('Background removal successful');
+                setProcessedImage(result);
+            } else {
+                console.error('Background removal failed: Result is undefined or does not contain a canvas');
             }
-        };
-
-        img.onerror = (error) => {
-            console.error('Error loading image for background removal:', error);
+        } catch (error) {
+            console.error('Error during background removal:', error);
         };
     };
 

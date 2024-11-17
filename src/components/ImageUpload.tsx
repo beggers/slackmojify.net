@@ -1,8 +1,6 @@
-import React from 'react';
-
 interface ImageUploadProps {
     setImage: (file: File) => void;
-    setProcessedImage: (image: string) => void;
+    setProcessedImage: (image: Blob) => void;
 }
 
 function ImageUpload({ setImage, setProcessedImage }: ImageUploadProps) {
@@ -10,13 +8,7 @@ function ImageUpload({ setImage, setProcessedImage }: ImageUploadProps) {
         const file = event.target.files?.[0];
         if (file) {
             setImage(file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                if (reader.result) {
-                    setProcessedImage(reader.result as string);
-                }
-            };
-            reader.readAsDataURL(file);
+            setProcessedImage(file);
         }
     };
 

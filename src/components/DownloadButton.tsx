@@ -1,7 +1,5 @@
-import React from 'react';
-
 interface DownloadButtonProps {
-    processedImage: string | null;
+    processedImage: Blob | null;
 }
 
 function DownloadButton({ processedImage }: DownloadButtonProps) {
@@ -9,7 +7,8 @@ function DownloadButton({ processedImage }: DownloadButtonProps) {
         if (!processedImage) return;
 
         const link = document.createElement('a');
-        link.href = processedImage;
+        const imageUrl = URL.createObjectURL(processedImage);
+        link.href = imageUrl;
         link.download = 'processed_image.png';
         link.click();
     };
