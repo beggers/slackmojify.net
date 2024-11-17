@@ -10,12 +10,10 @@ function EffectsControl({ image, setProcessedImage }) {
         }
         console.log('Received valid original image:', image);
 
-        const url = URL.createObjectURL(image);
-
         try {
             console.log('Removing background...');
-            const result = await removeBackground({ input: url });
-            if (result && result.canvas) {
+            const result = await removeBackground({ input: image });
+            if (result) {
                 console.log('Background removal successful');
                 setProcessedImage(result.canvas.toDataURL());
             } else {
