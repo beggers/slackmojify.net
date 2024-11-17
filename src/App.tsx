@@ -14,7 +14,7 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Slackmojify your <s>least</s> favorite coworkers!</h1>
+            <h1 className="visible-site-header">Slackmojify your <s>least</s> favorite coworkers!</h1>
             <div className="main-content">
                 <div className="upload-crop-controls">
                     <ImageUpload setProcessedImage={setProcessedImage} />
@@ -29,9 +29,9 @@ function App() {
                     <RemoveBackgroundButton image={processedImage} setProcessedImage={setProcessedImage} />
                     <DownloadButton processedImage={processedImage} />
                 </div>
-                <div className="effects-section">
-                    <EffectsSidebar image={processedImage} setProcessedImage={setProcessedImage} />
-                </div>
+            </div>
+            <div className="effects-section">
+                <EffectsSidebar image={processedImage} setProcessedImage={setProcessedImage} />
             </div>
         </div>
     );
