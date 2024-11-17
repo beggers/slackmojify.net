@@ -1,35 +1,52 @@
 import React from 'react';
+import { removeBackground } from '@imgly/background-removal';
 
-function EffectsControl({ processedImage, setProcessedImage }) {
-    const applyBrightness = (brightness) => {
-        if (!processedImage) return;
+function EffectsControl({ image, setProcessedImage }) {
+    const removeBackgroundHandler = async () => {
+        console.log('Button clicked');
+        if (!image) {
+            console.error('No image found');
+            return;
+        }
+        console.log('Received valid original image:', image);
 
-        const imageElement = document.createElement('img');
-        imageElement.src = processedImage;
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const img = new Image();
+            img.src = reader.result;
 
-        imageElement.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = imageElement.width;
-            canvas.height = imageElement.height;
+            console.log('Loading image...');
+            img.onload = async () => {
+                try {
+                    console.log('Removing background...');
+                    const result = await removeBackground({ input: image });
+                    if (result && result.canvas) {
+                        console.log('Background removal successful');
+                        setProcessedImage(result.canvas.toDataURL());
+                    } else {
+                        console.error('Background removal failed: Result is undefined or does not contain a canvas');
+                    }
+                } catch (error) {
+                    console.error('Error removing background:', error);
+                }
+            };
 
-            ctx.filter = `brightness(${brightness}%)`;
-            ctx.drawImage(imageElement, 0, 0);
-
-            setProcessedImage(canvas.toDataURL());
+            img.onerror = (error) => {
+                console.error('Error loading image:', error);
+            };
         };
+
+        reader.onerror = (error) => {
+            console.error('Error reading file:', error);
+        };
+
+        console.log('Reading file...');
+        reader.readAsDataURL(image);
     };
 
     return (
         <div className="effects-control">
-            <label>Brightness:</label>
-            <input
-                type="range"
-                min="0"
-                max="200"
-                defaultValue="100"
-                onChange={(e) => applyBrightness(e.target.value)}
-            />
+            <button onClick={removeBackgroundHandler}>Remove Background</button>
         </div>
     );
 }
