@@ -1,6 +1,10 @@
 import React from 'react';
 
-function DownloadButton({ processedImage }) {
+interface DownloadButtonProps {
+    processedImage: string | null;
+}
+
+function DownloadButton({ processedImage }: DownloadButtonProps) {
     const handleDownload = () => {
         if (!processedImage) return;
 
