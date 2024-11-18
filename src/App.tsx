@@ -1,38 +1,42 @@
-import { useState } from 'react';
 import './App.css';
-import RemoveBackgroundButton from './components/RemoveBackgroundButton';
-import ImageUpload from './components/ImageUpload';
+import { useState } from 'react';
+import UploadButton from './components/UploadButton';
+import UploadModal from './components/UploadModal';
 import ImageCanvas from './components/ImageCanvas';
 import DownloadButton from './components/DownloadButton';
 import EffectsSidebar from './components/EffectsSidebar';
-import CropControl from './components/CropControl';
-
 
 function App() {
     const [processedImage, setProcessedImage] = useState<Blob | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
+    const [uploadedImage, setUploadedImage] = useState<Blob | null>(null);
 
     return (
         <div className="App">
-            <h1 className="visible-site-header">Slackmojify your <s>least</s> favorite coworkers!</h1>
+            <h1 className="visible-site-header">Slackmojify your <s>least</s> favorite coworker!</h1>
             <div className="main-content">
-                <div className="upload-crop-controls">
-                    <ImageUpload setProcessedImage={setProcessedImage} />
-                    <button onClick={() => setIsCropping(true)} disabled={!processedImage} className="crop-button">Crop</button>
+                <div className="upload-button">
+                    <UploadButton setProcessedImage={(image) => { setUploadedImage(image); setIsCropping(true); }} />
                 </div>
                 <div className="image-section">
-                    {isCropping && processedImage ? (
-                        <CropControl image={processedImage} setProcessedImage={(blob) => { setProcessedImage(blob); setIsCropping(false); }} />
-                    ) : (
+                    {processedImage ? (
                         <ImageCanvas processedImage={processedImage} />
+                    ) : (
+                        <p>No image processed yet</p>
                     )}
-                    <RemoveBackgroundButton image={processedImage} setProcessedImage={setProcessedImage} />
                     <DownloadButton processedImage={processedImage} />
                 </div>
             </div>
             <div className="effects-section">
                 <EffectsSidebar image={processedImage} setProcessedImage={setProcessedImage} />
             </div>
+            {isCropping && uploadedImage && (
+                <UploadModal
+                    image={uploadedImage}
+                    setProcessedImage={(blob) => { setProcessedImage(blob); setIsCropping(false); }}
+                    onClose={() => setIsCropping(false)}
+                />
+            )}
         </div>
     );
 }

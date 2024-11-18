@@ -1,9 +1,9 @@
-interface ImageUploadProps {
+interface UploadButtonProps {
     setProcessedImage: (image: Blob) => void;
 }
 
-function ImageUpload({ setProcessedImage }: ImageUploadProps) {
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+function UploadButton({ setProcessedImage }: UploadButtonProps) {
+    const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const blob = new Blob([file], { type: file.type });
@@ -13,9 +13,9 @@ function ImageUpload({ setProcessedImage }: ImageUploadProps) {
 
     return (
         <div className="image-upload">
-            <input type="file" onChange={handleImageUpload} />
+            <input type="file" onChange={handleUpload} />
         </div>
     );
 }
 
-export default ImageUpload;
+export default UploadButton;
