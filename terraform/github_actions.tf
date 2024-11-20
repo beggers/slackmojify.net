@@ -1,8 +1,6 @@
-resource "aws_iam_openid_connect_provider" "github" {
-  url            = "https://token.actions.githubusercontent.com"
-  client_id_list = ["sts.amazonaws.com"]
-  # Not used by still required by tf.
-  thumbprint_list = ["ffffffffffffffffffffffffffffffffffffffff"]
+# Created in the beneggers.com repo
+locals {
+  oidc_provider_arn = "arn:aws:iam::110322115102:oidc-provider/token.actions.githubusercontent.com"
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role" {
@@ -10,7 +8,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [local.oidc_provider_arn]
     }
     condition {
       test     = "StringEquals"
@@ -26,7 +24,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "aws_iam_role" "github_actions" {
-  name               = "github-actions"
+  name               = "slackmoji-github-actions"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
 
