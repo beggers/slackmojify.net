@@ -21,7 +21,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           aws-region: us-east-1
-          role-to-assume: "arn:aws:iam::110322115102:role/slackmoji-github-actions"
+          role-to-assume: "arn:aws:iam::110322115102:role/github-actions"
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
