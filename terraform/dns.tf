@@ -1,19 +1,5 @@
 resource "aws_route53domains_registered_domain" "slackmojifymycoworkerdotnet" {
   domain_name = var.domainName
-
-  # I did something stupid. These are manually copied from the AWS console.
-  name_server {
-    name = "ns-495.awsdns-61.com"
-  }
-  name_server {
-    name = "ns-884.awsdns-46.net"
-  }
-  name_server {
-    name = "ns-1124.awsdns-12.org"
-  }
-  name_server {
-    name = "ns-1950.awsdns-51.co.uk"
-  }
 }
 
 resource "aws_route53_zone" "main" {
@@ -41,4 +27,28 @@ resource "aws_route53_record" "soa" {
   records = [
     "${aws_route53domains_registered_domain.slackmojifymycoworkerdotnet.name_server[0].name}. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 300"
   ]
+}
+
+resource "aws_route53_record" "a" {
+  for_each = toset([var.domainName, "www.${var.domainName}"])
+  zone_id  = aws_route53_zone.main.zone_id
+  name     = each.value
+  type     = "A"
+  alias {
+    name                   = aws_cloudfront_distribution.main.domain_name
+    zone_id                = aws_cloudfront_distribution.main.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "aaaa" {
+  for_each = toset([var.domainName, "www.${var.domainName}"])
+  zone_id  = aws_route53_zone.main.zone_id
+  name     = each.value
+  type     = "AAAA"
+  alias {
+    name                   = aws_cloudfront_distribution.main.domain_name
+    zone_id                = aws_cloudfront_distribution.main.hosted_zone_id
+    evaluate_target_health = false
+  }
 }

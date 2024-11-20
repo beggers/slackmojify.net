@@ -1,5 +1,5 @@
 variable "domainName" {
-  default = "slackmojifymycoworker.net"
+  default = "slackmojify.net"
   type    = string
 }
 
