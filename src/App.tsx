@@ -9,13 +9,14 @@ import EffectsSidebar from './components/EffectsSidebar';
 function App() {
     const [image, setImage] = useState<Blob | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
+    const [fileName, setFileName] = useState<string>('');
 
     return (
         <div className="App">
             <h1 className="visible-site-header">Slackmojify your <s>least</s> favorite coworker!</h1>
             <div className="main-content">
                 <div className="upload-button">
-                    <UploadButton setImage={(image) => { setImage(image); setIsCropping(true); }} />
+                    <UploadButton setImage={(image) => { setImage(image); setIsCropping(true); }} setFileName={setFileName} />
                 </div>
                 <div className="image-section">
                     {!!!image && <p>Upload an image to get started</p>}
@@ -29,7 +30,7 @@ function App() {
                     {!!image && !isCropping && (
                         <ImageCanvas image={image} />
                     )}
-                    <DownloadButton image={image} />
+                    <DownloadButton image={image} fileName={fileName} />
                 </div>
             </div>
             <EffectsSidebar image={image} setProcessedImage={setImage} />
