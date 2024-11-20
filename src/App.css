@@ -15,7 +15,7 @@ body {
 
     display: grid;
     grid-template-columns: 1fr minmax(auto, 60ch) 1fr;
-    grid-template-rows: 2rem auto 5%;
+    grid-template-rows: 2rem auto 2rem;
     gap: 5vh;
     height: 90vh;
 
@@ -38,7 +38,7 @@ body {
     margin-right: 20px;
 }
 
-.effects-section {
+.effects-sidebar {
     background: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
@@ -70,10 +70,6 @@ body {
 
 .download-button {
     margin-top: 20px;
-}
-
-.effects-sidebar {
-    gap: 10px;
 }
 
 input[type='file'] {

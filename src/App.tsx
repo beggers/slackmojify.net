@@ -32,6 +32,7 @@ function App() {
                     <DownloadButton image={image} />
                 </div>
             </div>
+            <EffectsSidebar image={image} setProcessedImage={setImage} />
         </div>
     );
 }
