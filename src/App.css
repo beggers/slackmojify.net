@@ -54,6 +54,13 @@ body {
     margin-top: 20px;
 }
 
+.cropper {
+    width: 100%;
+    height: 60vh;
+    object-fit: contain;
+    margin-top: 20px;
+}
+
 .image-fit-viewport {
     width: auto;
     height: 100%;
