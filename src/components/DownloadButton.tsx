@@ -1,13 +1,13 @@
 interface DownloadButtonProps {
-    processedImage: Blob | null;
+    image: Blob | null;
 }
 
-function DownloadButton({ processedImage }: DownloadButtonProps) {
+function DownloadButton({ image }: DownloadButtonProps) {
     const handleDownload = () => {
-        if (!processedImage) return;
+        if (!image) return;
 
         const link = document.createElement('a');
-        const imageUrl = URL.createObjectURL(processedImage);
+        const imageUrl = URL.createObjectURL(image);
         link.href = imageUrl;
         link.download = 'processed_image.png';
         link.click();
@@ -15,7 +15,7 @@ function DownloadButton({ processedImage }: DownloadButtonProps) {
 
     return (
         <div className="download-button">
-            <button onClick={handleDownload} disabled={!processedImage}>Download Image</button>
+            <button onClick={handleDownload} disabled={!image}>Download Image</button>
         </div>
     );
 }

@@ -1,10 +1,10 @@
 interface ImageCanvasProps {
-    processedImage: Blob | null;
+    image: Blob | null;
 }
 
-function ImageCanvas({ processedImage }: ImageCanvasProps) {
-    if (!processedImage) return null;
-    const imageUrl = URL.createObjectURL(processedImage);
+function ImageCanvas({ image }: ImageCanvasProps) {
+    if (!image) return null;
+    const imageUrl = URL.createObjectURL(image);
 
     return (
         <div className="image-preview">

@@ -1,13 +1,13 @@
 interface UploadButtonProps {
-    setProcessedImage: (image: Blob) => void;
+    setImage: (image: Blob) => void;
 }
 
-function UploadButton({ setProcessedImage }: UploadButtonProps) {
+function UploadButton({ setImage }: UploadButtonProps) {
     const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const blob = new Blob([file], { type: file.type });
-            setProcessedImage(blob);
+            setImage(blob);
         }
     };
 

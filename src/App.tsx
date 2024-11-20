@@ -7,36 +7,31 @@ import DownloadButton from './components/DownloadButton';
 import EffectsSidebar from './components/EffectsSidebar';
 
 function App() {
-    const [processedImage, setProcessedImage] = useState<Blob | null>(null);
+    const [image, setImage] = useState<Blob | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
-    const [uploadedImage, setUploadedImage] = useState<Blob | null>(null);
 
     return (
         <div className="App">
             <h1 className="visible-site-header">Slackmojify your <s>least</s> favorite coworker!</h1>
             <div className="main-content">
                 <div className="upload-button">
-                    <UploadButton setProcessedImage={(image) => { setUploadedImage(image); setIsCropping(true); }} />
+                    <UploadButton setImage={(image) => { setImage(image); setIsCropping(true); }} />
                 </div>
                 <div className="image-section">
-                    {processedImage ? (
-                        <ImageCanvas processedImage={processedImage} />
-                    ) : (
-                        <p>No image processed yet</p>
+                    {!!!image && <p>Upload an image to get started</p>}
+                    {!!image && isCropping && (
+                        <UploadModal
+                            image={image}
+                            setImage={(blob) => { setImage(blob); setIsCropping(false); }}
+                            onClose={() => setIsCropping(false)}
+                        />
                     )}
-                    <DownloadButton processedImage={processedImage} />
+                    {!!image && !isCropping && (
+                        <ImageCanvas image={image} />
+                    )}
+                    <DownloadButton image={image} />
                 </div>
             </div>
-            <div className="effects-section">
-                <EffectsSidebar image={processedImage} setProcessedImage={setProcessedImage} />
-            </div>
-            {isCropping && uploadedImage && (
-                <UploadModal
-                    image={uploadedImage}
-                    setProcessedImage={(blob) => { setProcessedImage(blob); setIsCropping(false); }}
-                    onClose={() => setIsCropping(false)}
-                />
-            )}
         </div>
     );
 }

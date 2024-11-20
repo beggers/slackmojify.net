@@ -5,11 +5,11 @@ import 'cropperjs/dist/cropper.css';
 
 interface UploadModalProps {
     image: Blob | null;
-    setProcessedImage: (image: Blob) => void;
+    setImage: (image: Blob) => void;
     onClose: () => void;
 }
 
-function UploadModal({ image, setProcessedImage, onClose }: UploadModalProps) {
+function UploadModal({ image, setImage, onClose }: UploadModalProps) {
     const [backgroundRemovedImage, setBackgroundRemovedImage] = useState<Blob | null>(null);
     const cropperRef = useRef<HTMLImageElement & { cropper?: Cropper }>(null);
 
@@ -39,7 +39,7 @@ function UploadModal({ image, setProcessedImage, onClose }: UploadModalProps) {
         if (cropper) {
             cropper.getCroppedCanvas().toBlob((blob) => {
                 if (blob) {
-                    setProcessedImage(blob);
+                    setImage(blob);
                     onClose();
                 }
             });
