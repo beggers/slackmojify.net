@@ -13,27 +13,27 @@ function ImageCanvas({ image, overlayImages, setDownloadableImage }: ImageCanvas
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const fabricCanvasRef = useRef<Canvas | null>(null);
 
-    function updateDownloadableImage() {
-        if (!fabricCanvasRef.current) return;
-
-        // TODO other image types
-        const downloadableImageUrl = fabricCanvasRef.current.toDataURL({
-            format: 'png',
-            multiplier: 1
-        });
-        const base64Data = downloadableImageUrl.replace(/^data:image\/png;base64,/, '');
-
-        const byteCharacters = atob(base64Data);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'image/png' });
-        setDownloadableImage(blob);
-    }
-
     useEffect(() => {
+        function updateDownloadableImage() {
+            if (!fabricCanvasRef.current) return;
+
+            // TODO other image types
+            const downloadableImageUrl = fabricCanvasRef.current.toDataURL({
+                format: 'png',
+                multiplier: 1
+            });
+            const base64Data = downloadableImageUrl.replace(/^data:image\/png;base64,/, '');
+
+            const byteCharacters = atob(base64Data);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/png' });
+            setDownloadableImage(blob);
+        }
+
         if (!fabricCanvasRef.current && canvasRef.current) {
             const canvasElement = canvasRef.current;
             const parentElement = canvasElement.parentElement;
@@ -82,7 +82,7 @@ function ImageCanvas({ image, overlayImages, setDownloadableImage }: ImageCanvas
             reader.readAsDataURL(image);
 
         }
-    }, [image, overlayImages]);
+    }, [image, overlayImages, setDownloadableImage]);
 
     return (
         <div className="image-preview">

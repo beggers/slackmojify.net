@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FabricImage, ImageProps } from 'fabric';
+import { FabricImage } from 'fabric';
 
 interface EffectsSidebarProps {
     overlayImages: FabricImage[];
