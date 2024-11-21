@@ -30,7 +30,6 @@ function ImageCanvas({ image }: ImageCanvasProps) {
                 if (e.target?.result && typeof e.target.result === 'string') {
                     FabricImage.fromURL(e.target.result).then((img) => {
                         if (!fabricCanvasRef.current) throw new Error('Canvas not found');
-
                         const canvas = fabricCanvasRef.current;
                         img.scaleToWidth(canvas.getWidth());
                         img.scaleToHeight(canvas.getHeight());

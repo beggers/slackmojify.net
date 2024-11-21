@@ -10,16 +10,16 @@ function EffectsSidebar({ image, setProcessedImage }: EffectsSidebarProps) {
             return;
         }
         console.log(`Applying effect: ${effect}`);
-        // Future implementation for applying specific effects will go here
     };
 
     return (
         <div className="effects-sidebar">
-            <h3>Available Effects</h3>
-            <button onClick={() => handleEffectClick('sunglasses')}>Add Sunglasses</button>
-            <button onClick={() => handleEffectClick('rotate')}>Rotate Image</button>
-            <button onClick={() => handleEffectClick('laserEyes')}>Add Laser Eyes</button>
-            {/* More effects can be easily added here */}
+            <h3>Add overlay images</h3>
+            <p>Coming soon!</p>
+            <h3>Add filters</h3>
+            <p>Coming soon!</p>
+            <h3>Animate</h3>
+            <p>Coming soon!</p>
         </div>
     );
 }
