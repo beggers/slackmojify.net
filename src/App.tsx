@@ -5,11 +5,15 @@ import UploadModal from './components/UploadModal';
 import ImageCanvas from './components/ImageCanvas';
 import DownloadButton from './components/DownloadButton';
 import EffectsSidebar from './components/EffectsSidebar';
+import { FabricImage } from 'fabric';
 
 function App() {
     const [image, setImage] = useState<Blob | null>(null);
     const [isCropping, setIsCropping] = useState<boolean>(false);
     const [fileName, setFileName] = useState<string>('');
+
+    // Yeah yeah we should probably have a sub-component to hold this state.
+    const [overlayImages, setOverlayImages] = useState<FabricImage[]>([]);
 
     return (
         <div className="App">
@@ -28,12 +32,12 @@ function App() {
                         />
                     )}
                     {!!image && !isCropping && (
-                        <ImageCanvas image={image} />
+                        <ImageCanvas image={image} overlayImages={overlayImages} />
                     )}
                     <DownloadButton image={image} fileName={fileName} />
                 </div>
             </div>
-            <EffectsSidebar image={image} setProcessedImage={setImage} />
+            <EffectsSidebar overlayImages={overlayImages} setOverlayImages={setOverlayImages} />
         </div>
     );
 }

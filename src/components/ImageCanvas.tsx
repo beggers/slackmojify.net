@@ -1,13 +1,14 @@
-import { FabricImage, StaticCanvas } from 'fabric';
+import { FabricImage, Canvas } from 'fabric';
 import { useEffect, useRef } from 'react';
 
 interface ImageCanvasProps {
     image: Blob | null;
+    overlayImages: FabricImage[];
 }
 
-function ImageCanvas({ image }: ImageCanvasProps) {
+function ImageCanvas({ image, overlayImages }: ImageCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const fabricCanvasRef = useRef<StaticCanvas | null>(null);
+    const fabricCanvasRef = useRef<Canvas | null>(null);
 
     useEffect(() => {
         if (!fabricCanvasRef.current && canvasRef.current) {
@@ -19,7 +20,7 @@ function ImageCanvas({ image }: ImageCanvasProps) {
                 canvasElement.width = width;
                 canvasElement.height = height;
 
-                const newCanvas = new StaticCanvas(canvasElement);
+                const newCanvas = new Canvas(canvasElement);
                 fabricCanvasRef.current = newCanvas;
             }
         }
@@ -31,16 +32,24 @@ function ImageCanvas({ image }: ImageCanvasProps) {
                     FabricImage.fromURL(e.target.result).then((img) => {
                         if (!fabricCanvasRef.current) throw new Error('Canvas not found');
                         const canvas = fabricCanvasRef.current;
+                        canvas.clear();
                         img.scaleToWidth(canvas.getWidth());
                         img.scaleToHeight(canvas.getHeight());
                         canvas.add(img);
+
+                        if (overlayImages.length > 0) {
+                            overlayImages.forEach((img) => {
+                                canvas.add(img);
+                                canvas.centerObject(img);
+                            });
+                        }
                         canvas.renderAll();
                     });
                 }
             };
             reader.readAsDataURL(image);
         }
-    }, [image]);
+    }, [image, overlayImages]);
 
     return (
         <div className="image-preview">
