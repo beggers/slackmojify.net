@@ -94,7 +94,6 @@ function UploadModal({ image, setImage, onClose }: UploadModalProps) {
                     </div>
                 ) : (
                     <div className="crop-control">
-                        <h3>Crop Image</h3>
                         <Cropper
                             src={URL.createObjectURL(backgroundRemovedImage)}
                             initialAspectRatio={1}

@@ -34,10 +34,6 @@ body {
     grid-row: 2;
 }
 
-.image-section {
-    margin-right: 20px;
-}
-
 .effects-sidebar {
     background: #f9f9f9;
     padding: 20px;
@@ -53,11 +49,10 @@ body {
     margin-top: 20px;
 }
 
-.fabric-canvas {
+canvas {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /*  center it horizontally  */
 }
 
 img {
