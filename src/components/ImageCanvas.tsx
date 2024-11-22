@@ -54,6 +54,7 @@ function ImageCanvas({ image, overlayImages, fileName }: ImageCanvasProps) {
                         if (!fabricCanvasRef.current) throw new Error('Canvas not found');
                         const canvas = fabricCanvasRef.current;
                         canvas.clear();
+                        img.selectable = false;
                         img.scaleToWidth(canvas.getWidth());
                         img.scaleToHeight(canvas.getHeight());
                         canvas.add(img);

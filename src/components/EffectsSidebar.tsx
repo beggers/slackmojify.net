@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FabricImage } from 'fabric';
+import get_overlay_padding from '../overlay_image_control_sizes';
 
 interface EffectsSidebarProps {
     overlayImages: FabricImage[];
@@ -10,16 +11,17 @@ function EffectsSidebar({ overlayImages, setOverlayImages }: EffectsSidebarProps
     const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({});
 
     const overlayImageUrls = [
-        'images/laser_eyes_1.png',
-        'images/laser_eyes_2.png',
-        'images/laser_eyes_3.png',
-        'images/laser_eyes_4.png'
+        'blue-flare.png',
+        'white-flare.png',
     ];
 
     const handleAddOverlay = (imageUrl: string) => {
         setIsLoading((prev) => ({ ...prev, [imageUrl]: true }));
-        FabricImage.fromURL(imageUrl).then((img) => {
-            img.scale(0.05);
+        FabricImage.fromURL('images/' + imageUrl).then((img) => {
+            img.scale(0.5);
+            img.set({
+                padding: get_overlay_padding(imageUrl),
+            });
             if (img) {
                 setOverlayImages([...overlayImages, img]);
             }
@@ -27,6 +29,7 @@ function EffectsSidebar({ overlayImages, setOverlayImages }: EffectsSidebarProps
         });
     };
 
+    // TODO Buttons should display a small preview image instead of text
     return (
         <div className="effects-sidebar">
             <h3>Add overlay images</h3>
