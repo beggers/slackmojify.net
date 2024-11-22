@@ -3,7 +3,6 @@ import { useState } from 'react';
 import UploadButton from './components/UploadButton';
 import UploadModal from './components/UploadModal';
 import ImageCanvas from './components/ImageCanvas';
-import DownloadButton from './components/DownloadButton';
 import EffectsSidebar from './components/EffectsSidebar';
 import { FabricImage } from 'fabric';
 
