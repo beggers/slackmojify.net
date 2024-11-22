@@ -79,7 +79,11 @@ function ImageCanvas({ image, overlayImages, fileName }: ImageCanvasProps) {
                 <canvas ref={canvasRef} id="image-canvas-element" />
             </div>
             <div>
-                <DownloadButton getDownloadableImage={getDownloadableImage} fileName={fileName} />
+                <DownloadButton
+                    getDownloadableImage={getDownloadableImage}
+                    fileName={fileName}
+                    disabled={!image}
+                />
             </div>
         </div>
     );

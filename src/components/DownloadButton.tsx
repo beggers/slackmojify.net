@@ -1,9 +1,10 @@
 interface DownloadButtonProps {
     getDownloadableImage: () => Blob | null;
     fileName: string;
+    disabled?: boolean;
 }
 
-function DownloadButton({ getDownloadableImage, fileName }: DownloadButtonProps) {
+function DownloadButton({ getDownloadableImage, fileName, disabled }: DownloadButtonProps) {
     const handleDownload = () => {
         const image = getDownloadableImage();
         if (!image) return
@@ -17,7 +18,7 @@ function DownloadButton({ getDownloadableImage, fileName }: DownloadButtonProps)
 
     return (
         <div className="download-button">
-            <button onClick={handleDownload}>Download Image</button>
+            <button onClick={handleDownload} disabled={disabled}>Download Image</button>
         </div>
     );
 }
