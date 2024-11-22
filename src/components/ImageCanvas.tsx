@@ -31,47 +31,64 @@ function ImageCanvas({ image, overlayImages, fileName }: ImageCanvasProps) {
         return new Blob([byteArray], { type: 'image/png' });
     }
 
+    // Initialize canvas
     useEffect(() => {
-        if (!fabricCanvasRef.current && canvasRef.current) {
-            const canvasElement = canvasRef.current;
-            const parentElement = canvasElement.parentElement;
+        if (fabricCanvasRef.current || !canvasRef.current) return;
+        const canvasElement = canvasRef.current;
+        const parentElement = canvasElement.parentElement;
 
-            if (parentElement) {
-                const { offsetWidth: width, offsetHeight: height } = parentElement;
-                canvasElement.width = width;
-                canvasElement.height = height;
+        if (parentElement) {
+            const { offsetWidth: width, offsetHeight: height } = parentElement;
+            canvasElement.width = width;
+            canvasElement.height = height;
 
-                const newCanvas = new Canvas(canvasElement);
-                fabricCanvasRef.current = newCanvas;
-            }
+            // Initialize Fabric.js canvas
+            const newCanvas = new Canvas(canvasElement, { preserveObjectStacking: true });
+            fabricCanvasRef.current = newCanvas;
         }
+    }, []);
 
-        if (fabricCanvasRef.current && image) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                if (e.target?.result && typeof e.target.result === 'string') {
-                    FabricImage.fromURL(e.target.result).then((img) => {
-                        if (!fabricCanvasRef.current) throw new Error('Canvas not found');
-                        const canvas = fabricCanvasRef.current;
-                        canvas.clear();
-                        img.selectable = false;
-                        img.scaleToWidth(canvas.getWidth());
-                        img.scaleToHeight(canvas.getHeight());
+    // Add base image to canvas
+    useEffect(() => {
+        if (!fabricCanvasRef.current || !image) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            if (e.target?.result && typeof e.target.result === 'string') {
+                FabricImage.fromURL(e.target.result).then((img) => {
+                    if (!fabricCanvasRef.current) throw new Error('Canvas not found');
+                    const canvas = fabricCanvasRef.current;
+                    canvas.clear();
+
+                    img.selectable = false;
+                    img.evented = false;
+                    img.scaleToWidth(canvas.getWidth());
+                    img.scaleToHeight(canvas.getHeight());
+
+                    canvas.add(img);
+                    canvas.sendObjectToBack(img);
+
+                    // We need to remove overlay images before adding them each
+                    // time, or else the saturation of existing overlay images
+                    // increases every time a new one is added.
+                    // I couldn't find a way to remove them from the canvas
+                    // without clearing it, so we do overlay images in this hook
+                    // instead of a separate one ¯\_(ツ)_/¯
+                    const addOverlayImage = (img: FabricImage) => {
                         canvas.add(img);
-
-                        if (overlayImages.length > 0) {
-                            overlayImages.forEach((img) => {
-                                canvas.add(img);
-                                canvas.centerObject(img);
-                            });
-                        }
+                        canvas.bringObjectToFront(img);
                         canvas.renderAll();
-                    });
-                }
-            };
-            reader.readAsDataURL(image);
+                    };
 
-        }
+                    for (const overlayImage of overlayImages) {
+                        addOverlayImage(overlayImage);
+                    }
+
+                    canvas.renderAll();
+                });
+            }
+        };
+        reader.readAsDataURL(image);
     }, [image, overlayImages]);
 
     return (
