@@ -4,13 +4,24 @@
 // since the images often contain small lens flare effects which go hella wide.
 // This function gives the padding values to use for the FabricJS image controls.
 // They are selected entirely on vibes.
-export default function get_overlay_padding(image_name: string): number {
+export function get_overlay_padding(image_name: string): number {
     switch (image_name) {
         case 'blue-flare.png':
             return -130;
         case 'white-flare.png':
             return -70;
+        case 'red-flare.png':
+            return -230;
         default:
             return 0;
+    }
+}
+
+export function image_scale(image_name: string): number {
+    switch (image_name) {
+        case 'red-flare.png':
+            return 0.2;
+        default:
+            return 0.5;
     }
 }

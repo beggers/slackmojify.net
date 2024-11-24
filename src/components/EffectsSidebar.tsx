@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FabricImage } from 'fabric';
-import get_overlay_padding from '../overlay_image_control_sizes';
+import { image_scale, get_overlay_padding } from '../image_constants';
 
 interface EffectsSidebarProps {
     overlayImages: FabricImage[];
@@ -13,12 +13,13 @@ function EffectsSidebar({ overlayImages, setOverlayImages }: EffectsSidebarProps
     const overlayImageUrls = [
         'blue-flare.png',
         'white-flare.png',
+        'red-flare.png',
     ];
 
     const handleAddOverlay = (imageUrl: string) => {
         setIsLoading((prev) => ({ ...prev, [imageUrl]: true }));
         FabricImage.fromURL('images/' + imageUrl).then((img) => {
-            img.scale(0.5);
+            img.scale(image_scale(imageUrl));
             img.set({
                 padding: get_overlay_padding(imageUrl),
             });
